@@ -1,0 +1,13 @@
+{
+    "category_summary": {
+        "Entertainment": 230,
+        "Food": 275,
+        "Music": 90,
+        "Social": 130,
+        "Tech": 260,
+        "Transport": 90
+    },
+    "monthly_summary": {
+        "2025-05": 1075
+    }
+}
