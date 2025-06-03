@@ -1,0 +1,6 @@
+pandas
+sqlite3
+scikit-learn
+bcrypt
+argparse
+joblib
