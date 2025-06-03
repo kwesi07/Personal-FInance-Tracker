@@ -2,7 +2,7 @@ Expense Tracker
 
 Description
 
-A Python-based command-line application for personal finance management, featuring user authentication, AI-driven expense categorization, and budget tracking. Uses SQLite for persistent storage, Pandas for analytics, and scikit-learn for machine learning. Designed to showcase Python, database, and AI skills for tech/finance roles.
+A Python-based command-line application for personal finance management, featuring user authentication, AI-driven expense categorization, budget tracking, and spending visualizations. Uses SQLite for persistent storage, Pandas for analytics, scikit-learn for machine learning, and Matplotlib for charts. Designed to showcase Python, database, and AI skills for tech/finance roles.
 
 Features
 
@@ -26,7 +26,7 @@ Budget Management: Set monthly budgets per category with spending alerts.
 
 
 
-Analytics: View expense summaries and budget status with Pandas.
+Analytics: View expense summaries, budgets, and bar charts (JSON and PNG output).
 
 Prerequisites
 
@@ -63,13 +63,13 @@ pip install -r requirements.txt
 
 
 
-Prepare training data:
+Prepare training_data.csv:
 
 
 
 
 
-Ensure training_data.csv exists with columns description,category.
+Ensure csv exists with columns description,category.
 
 
 
@@ -102,18 +102,15 @@ python expense_tracker.py view-budget --user_id 1
 # View expenses
 python expense_tracker.py view-expenses --user_id 1
 
+# View summary with JSON and chart
+python expense_tracker.py view-summary --user_id 1
+
 Sample Output
 
-Budget Summary:
-   category    month  budget  spent  remaining
-0      Food  2025-06   200.0   5.50     194.50
-1   Transport  2025-06   100.0  15.00      85.00
-
-Expense Summary:
-category
-Food         5.50
-Transport   15.00
-Name: amount, dtype: float64
+Summary saved to summary.json:
+{'Food': 5.5, 'Transport': 15.0}
+Chart saved to summary.png
+[Image opens in default viewer]
 
 Troubleshooting
 
@@ -129,6 +126,10 @@ AI Model: Verify training_data.csv exists. Retrain by deleting model.pkl.
 
 
 
+Chart Issues: Ensure Matplotlib is installed (pip show matplotlib). Check summary.png.
+
+
+
 Dependencies: Run pip install -r requirements.txt if errors occur.
 
 Notes
@@ -137,7 +138,7 @@ Notes
 
 
 
-Portfolio: Demonstrates Python, SQLite, Pandas, and scikit-learn.
+Portfolio: Demonstrates Python, SQLite, Pandas, scikit-learn, and Matplotlib.
 
 
 

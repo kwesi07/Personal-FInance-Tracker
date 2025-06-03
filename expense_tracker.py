@@ -8,6 +8,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 import joblib
 import os
+import json
+import matplotlib.pyplot as plt
 
 # Initialize database
 def init_db():
@@ -175,6 +177,41 @@ def view_expenses(user_id):
         print("\nDetailed Expenses:")
         print(df)
 
+# View summary with JSON output and Matplotlib chart
+def view_summary(user_id):
+    conn = sqlite3.connect("expenses.db")
+    df = pd.read_sql_query("SELECT category, SUM(amount) AS total FROM expenses WHERE user_id = ? GROUP BY category",
+                           conn, params=(user_id,))
+    conn.close()
+    
+    if df.empty:
+        print("No expenses to summarize.")
+        return
+    
+    # JSON output
+    summary = dict(zip(df["category"], df["total"]))
+    with open("summary.json", "w") as f:
+        json.dump(summary, f, indent=4)
+    print("\nSummary saved to summary.json:")
+    print(summary)
+    
+    # Matplotlib chart
+    plt.figure(figsize=(10, 6))
+    plt.bar(df["category"], df["total"], color=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'])
+    plt.xlabel("Category")
+    plt.ylabel("Total Spent ($)")
+    plt.title("Spending by Category")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("summary.png")
+    plt.close()
+    print("Chart saved to summary.png")
+    # Open image (platform-specific)
+    if os.name == "posix":  # macOS/Linux
+        os.system("open summary.png")
+    elif os.name == "nt":  # Windows
+        os.system("start summary.png")
+
 if __name__ == "__main__":
     init_db()
     parser = argparse.ArgumentParser(description="Expense Tracker CLI")
@@ -212,6 +249,10 @@ if __name__ == "__main__":
     view_exp_parser = subparsers.add_parser("view-expenses", help="View expenses")
     view_exp_parser.add_argument("--user_id", type=int, required=True)
 
+    # View summary
+    summary_parser = subparsers.add_parser("view-summary", help="View expense summary with JSON and chart")
+    summary_parser.add_argument("--user_id", type=int, required=True)
+
     args = parser.parse_args()
 
     if args.command == "register":
@@ -227,3 +268,5 @@ if __name__ == "__main__":
         view_budgets(args.user_id)
     elif args.command == "view-expenses":
         view_expenses(args.user_id)
+    elif args.command == "view-summary":
+        view_summary(args.user_id)

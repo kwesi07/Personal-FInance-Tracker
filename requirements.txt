@@ -1,6 +1,1 @@
-pandas
-sqlite3
-scikit-learn
-bcrypt
-argparse
-joblib
+pandas sqlite3 scikit-learn bcrypt argparse joblib matplotlib
